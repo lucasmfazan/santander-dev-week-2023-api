@@ -1,0 +1,234 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "collapsed_sections": [
+        "kNuP0SDUZMBY"
+      ],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/lucasmfazan/santander-dev-week-2023-api/blob/main/Desafio%20de%20C%C3%B3digo%201\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# Desafio de Projeto 1 - Ciência de Dados com Python (Santander Bootcamp 2023)\n"
+      ],
+      "metadata": {
+        "id": "BPJQsTCULaC-"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Definição:**\n",
+        "\n",
+        "1. Executando transformação de informações a partir da leitura de uma tabela em arquivo .csv.\n",
+        "\n",
+        "2. Executando os processos de Extração, Transformação e Leitura."
+      ],
+      "metadata": {
+        "id": "k5fA5OrXt1a3"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## **E**xtract\n",
+        "\n",
+        "Extraindo os dados do arquivo .csv original."
+      ],
+      "metadata": {
+        "id": "9dfI-o7gLRq9"
+      }
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 56,
+      "metadata": {
+        "id": "NYydpX_GLRCB",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "e20d33c2-5479-4b62-b84c-c752e7c19d6d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[13.02, 13.02, 19.27, 19.27, 19.27, 19.27, 17.39, 19.27, 19.27, 19.27, 11.98, 19.27, 19.27, 19.27, 19.27, 13.83, 19.27, 19.27, 19.27, 19.27, 11.53, 17.53, 15.41, 20.03, 21.46, 78.12, 38.74, 18.75, 9.25, 10.89, 14.67, 13.02, 13.02, 19.27, 19.27, 19.27, 19.27, 17.39, 19.27, 19.27, 19.27, 11.98, 19.27, 19.27, 19.27, 19.27, 13.83, 19.27, 19.27, 19.27, 19.27, 11.53, 17.53, 15.41, 20.03, 21.46, 78.12, 38.74, 18.75, 9.25, 10.89, 14.69, 12.72, 12.72, 19.27, 19.27, 19.31, 19.27, 18.33, 19.27, 19.27, 19.27, 11.87, 19.27, 19.27, 19.27, 19.57, 13.83, 19.27, 19.27, 19.27, 19.27, 11.53, 17.35, 15.41, 20.03, 21.46, 76.1, 37.93, 18.02, 9.22, 10.85, 14.63]\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "df = pd.read_csv('mmb_Goinfra.csv')\n",
+        "\n",
+        "codigo = df['CUSTO'].tolist()\n",
+        "print(codigo)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## **T**ransform\n",
+        "\n",
+        "Gerando uma transformação nos dados"
+      ],
+      "metadata": {
+        "id": "cWoqInB4TF1x"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df = pd.DataFrame(codigo)\n",
+        "#print(df)\n",
+        "\n",
+        "#definir soma\n",
+        "soma = df.iloc[:, 0].sum()\n",
+        "print(soma)\n",
+        "\n",
+        "#definir quantidade\n",
+        "quantidade = df.iloc[:, 0].count()\n",
+        "print (quantidade)\n",
+        "\n",
+        "#definir média\n",
+        "media = soma/quantidade\n",
+        "print (media)\n",
+        "\n",
+        "#definido um nome para a 1ª coluna\n",
+        "df.columns = ['Custo']\n",
+        "print(df)\n",
+        "\n",
+        "#definido uma função para comparar os valores individuais com a média\n",
+        "def valor_seg(valor):\n",
+        "   return valor/media\n",
+        "\n",
+        "#executando a criação de uma nova coluna a partir da função valor_seg\n",
+        "df['Comparacao'] = df['Custo'].apply(valor_seg)\n",
+        "print(df)"
+      ],
+      "metadata": {
+        "id": "n1w78kNxTrZY",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "ceef1b67-a152-49fa-a464-25cef6e2329d"
+      },
+      "execution_count": 57,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "1840.7500000000002\n",
+            "93\n",
+            "19.793010752688176\n",
+            "    Custo\n",
+            "0   13.02\n",
+            "1   13.02\n",
+            "2   19.27\n",
+            "3   19.27\n",
+            "4   19.27\n",
+            "..    ...\n",
+            "88  37.93\n",
+            "89  18.02\n",
+            "90   9.22\n",
+            "91  10.85\n",
+            "92  14.63\n",
+            "\n",
+            "[93 rows x 1 columns]\n",
+            "    Custo  Comparacao\n",
+            "0   13.02    0.657808\n",
+            "1   13.02    0.657808\n",
+            "2   19.27    0.973576\n",
+            "3   19.27    0.973576\n",
+            "4   19.27    0.973576\n",
+            "..    ...         ...\n",
+            "88  37.93    1.916333\n",
+            "89  18.02    0.910422\n",
+            "90   9.22    0.465821\n",
+            "91  10.85    0.548173\n",
+            "92  14.63    0.739150\n",
+            "\n",
+            "[93 rows x 2 columns]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## **L**oad\n",
+        "\n",
+        "Atualize o arquivo original para um novo arquivo .csv."
+      ],
+      "metadata": {
+        "id": "kNuP0SDUZMBY"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#definindo uma nova tabela\n",
+        "df_new = df\n",
+        "print(df_new)\n",
+        "\n",
+        "#exportando um novo arquivo\n",
+        "df_new.to_csv('mmb_Goinfra-rev1.csv')"
+      ],
+      "metadata": {
+        "id": "YefWfYBoZMN2",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "595ad312-6479-4f34-f4c5-03207e1ff978"
+      },
+      "execution_count": 58,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "    Custo  Comparacao\n",
+            "0   13.02    0.657808\n",
+            "1   13.02    0.657808\n",
+            "2   19.27    0.973576\n",
+            "3   19.27    0.973576\n",
+            "4   19.27    0.973576\n",
+            "..    ...         ...\n",
+            "88  37.93    1.916333\n",
+            "89  18.02    0.910422\n",
+            "90   9.22    0.465821\n",
+            "91  10.85    0.548173\n",
+            "92  14.63    0.739150\n",
+            "\n",
+            "[93 rows x 2 columns]\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
